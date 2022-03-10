@@ -5,7 +5,8 @@ interface InputProps {
   type?: string;
 }
 const Input = ({ onChange, className, placeholder, type }: InputProps) => {
-  const fixedClass = "border h-[50px] border-1 w-full pl-4";
+  const fixedClass =
+    "border h-[50px] border-1 w-full pl-4 focus:outline-4 outline-green-300";
   return (
     <input
       type={type}
