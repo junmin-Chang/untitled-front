@@ -10,8 +10,8 @@ const Button: React.FC<ButtonProps> = ({ className, children, onClick }) => {
       className={
         className
           ? className +
-            " text-sm leading-none text-white cursor-pointer inline-block rounded-3xl py-2.5 px-4"
-          : "text-sm leading-none text-white cursor-pointer inline-block rounded-3xl py-2.5 px-4"
+            " text-sm leading-none cursor-pointer inline-block rounded-3xl py-2.5 px-4"
+          : "text-sm leading-none cursor-pointer inline-block rounded-3xl py-2.5 px-4"
       }
       onClick={onClick}
     >
