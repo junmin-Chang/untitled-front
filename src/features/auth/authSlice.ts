@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import authService from "../../services/auth";
+import { RootState } from "../../app/store";
+import authService from "../../services/auth/auth";
 const userData = localStorage.getItem("user");
 const user = userData && JSON.parse(userData);
 
@@ -40,6 +41,26 @@ export const logout = createAsyncThunk("auth/logout", async () => {
   await authService.logout();
 });
 
+export const getProfile = createAsyncThunk("auth/profile", async () => {
+  await authService.getProfile();
+});
+
+export const refreshToken = createAsyncThunk(
+  "auth/refreshToken",
+  async (_, thunkAPI) => {
+    const state = thunkAPI.getState() as RootState;
+    const res = await authService.refresh(state.auth.user?.refreshToken);
+
+    const newUser = {
+      ...state.auth.user,
+      accessToken: res.accessToken,
+      refreshToken: res.refreshToken,
+    };
+
+    return newUser;
+  }
+);
+
 const initialState = user
   ? { isLoggedIn: true, user }
   : { isLoggedIn: false, user: null };
@@ -66,6 +87,10 @@ const authSlice = createSlice({
     builder.addCase(logout.fulfilled, (state, action) => {
       state.isLoggedIn = false;
       state.user = null;
+    });
+    builder.addCase(refreshToken.fulfilled, (state, action) => {
+      state.isLoggedIn = true;
+      state.user = action.payload;
     });
   },
 });
