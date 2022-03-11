@@ -1,8 +1,24 @@
+import { Navigate } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../app/hooks";
 import Button from "../components/common/Button";
-import Input from "../components/common/Input";
 import AuthLayout from "../layouts/auth";
-
+import { SubmitHandler, useForm } from "react-hook-form";
+import { register } from "../features/auth/authSlice";
+type Inputs = {
+  userName: string;
+  userId: string;
+  password: string;
+  passwordMatch: string;
+};
 const Signup = () => {
+  const dispatch = useAppDispatch();
+  const { register: bind, handleSubmit } = useForm<Inputs>();
+  const onSubmit: SubmitHandler<Inputs> = (data) => {
+    dispatch(register(data)).unwrap();
+  };
+  const { isLoggedIn } = useAppSelector((state) => state.auth);
+
+  if (isLoggedIn) return <Navigate to="/" />;
   return (
     <AuthLayout>
       <svg
@@ -19,22 +35,43 @@ const Signup = () => {
       </svg>
       <p className="text-4xl font-black">Untitled</p>
       <p className="text-2xl font-medium">회원가입</p>
-
-      <Input type="text" onChange={() => {}} placeholder="닉네임" />
-      <Input type="text" onChange={() => {}} placeholder="아이디" />
-      <Input type="password" onChange={() => {}} placeholder="비밀번호" />
-      <Input
-        type="password"
-        onChange={() => {}}
-        placeholder="비밀번호 재확인"
-      />
-
-      <Button
-        className="bg-green-400 text-white font-lg text-lg h-[50px] w-[200px]"
-        onClick={() => {}}
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="flex flex-col space-y-4 w-full items-center"
       >
-        회원가입
-      </Button>
+        <input
+          className="border h-[50px] border-1 w-full pl-4 focus:outline-4 outline-green-300"
+          type="text"
+          placeholder="닉네임"
+          {...bind("userName", { required: true })}
+        />
+
+        <input
+          className="border h-[50px] border-1 w-full pl-4 focus:outline-4 outline-green-300"
+          type="text"
+          placeholder="아이디"
+          {...bind("userId")}
+        />
+        <input
+          className="border h-[50px] border-1 w-full pl-4 focus:outline-4 outline-green-300"
+          type="password"
+          placeholder="비밀번호"
+          {...bind("password")}
+        />
+        <input
+          className="border h-[50px] border-1 w-full pl-4 focus:outline-4 outline-green-300"
+          type="password"
+          placeholder="비밀번호 재확인"
+          {...bind("passwordMatch")}
+        />
+
+        <Button
+          className="bg-green-400 text-white font-lg text-lg h-[50px] w-[200px]"
+          onClick={() => {}}
+        >
+          회원가입
+        </Button>
+      </form>
     </AuthLayout>
   );
 };
