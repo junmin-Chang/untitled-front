@@ -1,9 +1,11 @@
-import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../app/hooks";
+import { logout } from "../features/auth/authSlice";
 import Button from "./common/Button";
 
 const Header = () => {
-  const [user, setUser] = useState(false);
+  const { isLoggedIn, user } = useAppSelector((state) => state.auth);
+  const dispatch = useAppDispatch();
   return (
     <header className="bg-white">
       <div className="flex px-5 py-4 border-b border-1 border-black[0.1] itmes-center justify-between">
@@ -27,13 +29,14 @@ const Header = () => {
           </div>
         </Link>
         <div>
-          {user ? (
+          {isLoggedIn ? (
             <div className="space-x-2.5">
               <span className="welcome">
-                어서오세요, <b className="text-green-700">준민 님</b>!
+                어서오세요,{" "}
+                <b className="text-green-700">{user.user.userName} 님</b>!
               </span>
               <Button
-                onClick={() => setUser(false)}
+                onClick={() => dispatch(logout())}
                 className="bg-green-500 text-white font-medium"
               >
                 로그아웃
@@ -43,7 +46,7 @@ const Header = () => {
             <div className="space-x-2.5">
               <Link to="/login">
                 <Button
-                  onClick={() => setUser(true)}
+                  onClick={() => {}}
                   className="bg-green-500 text-white font-medium"
                 >
                   로그인
@@ -51,7 +54,7 @@ const Header = () => {
               </Link>
               <Link to="/signup">
                 <Button
-                  onClick={() => setUser(false)}
+                  onClick={() => {}}
                   className="text-black border font-medium"
                 >
                   회원가입

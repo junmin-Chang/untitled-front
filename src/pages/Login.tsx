@@ -1,25 +1,27 @@
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import Button from "../components/common/Button";
-import Input from "../components/common/Input";
 import AuthLayout from "../layouts/auth";
-import { Navigate } from "react-router-dom";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { login } from "../features/auth/authSlice";
-
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 type Inputs = {
   userId: string;
   password: string;
 };
 const Login = () => {
+  const navigate = useNavigate();
   const { isLoggedIn } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
   const { register: bind, handleSubmit } = useForm<Inputs>();
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     dispatch(login(data)).unwrap();
   };
-  if (isLoggedIn) {
-    <Navigate to="/" />;
-  }
+  useEffect(() => {
+    if (isLoggedIn) {
+      navigate("/");
+    }
+  }, [isLoggedIn, navigate]);
   return (
     <AuthLayout>
       <svg

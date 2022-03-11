@@ -4,7 +4,7 @@ const authHeader = () => {
 
   if (user && user.accessToken) {
     return {
-      Authorization: `Bearer ${user.accessToken}`,
+      authorization: `Bearer ${user.accessToken}`,
     };
   } else {
     return {};
