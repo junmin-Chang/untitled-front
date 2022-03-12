@@ -1,9 +1,10 @@
 import { Navigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
-import Button from "../components/common/Button";
 import AuthLayout from "../layouts/auth";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { register } from "../features/auth/authSlice";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as Yup from "yup";
 type Inputs = {
   userName: string;
   userId: string;
@@ -12,7 +13,25 @@ type Inputs = {
 };
 const Signup = () => {
   const dispatch = useAppDispatch();
-  const { register: bind, handleSubmit } = useForm<Inputs>();
+
+  const registerSchema = Yup.object().shape({
+    userName: Yup.string()
+      .required("닉네임을 입력해주세요")
+      .min(3, "닉네임은 최소 3글자 입니다."),
+    userId: Yup.string().required("아이디를 입력해주세요"),
+    password: Yup.string()
+      .required("비밀번호를 입력해주세요")
+      .min(8, "비밀번호는 최소 8자리 입니다."),
+    passwordMatch: Yup.string()
+      .required("비밀번호를 재입력 해주세요.")
+      .oneOf([Yup.ref("password")], "패스워드가 일치하지 않습니다."),
+  });
+  const validationOption = { resolver: yupResolver(registerSchema) };
+  const {
+    register: bind,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<Inputs>(validationOption);
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     dispatch(register(data)).unwrap();
   };
@@ -43,8 +62,13 @@ const Signup = () => {
           className="border h-[50px] border-1 w-full pl-4 focus:outline-4 outline-green-300"
           type="text"
           placeholder="닉네임"
-          {...bind("userName", { required: true })}
+          {...bind("userName")}
         />
+        {errors.userName && (
+          <span className="text-red-600 font-lg">
+            {errors.userName.message}
+          </span>
+        )}
 
         <input
           className="border h-[50px] border-1 w-full pl-4 focus:outline-4 outline-green-300"
@@ -52,25 +76,37 @@ const Signup = () => {
           placeholder="아이디"
           {...bind("userId")}
         />
+        {errors.userId && (
+          <span className="text-red-600 font-lg">{errors.userId.message}</span>
+        )}
         <input
           className="border h-[50px] border-1 w-full pl-4 focus:outline-4 outline-green-300"
           type="password"
           placeholder="비밀번호"
           {...bind("password")}
         />
+        {errors.password && (
+          <span className="text-red-600 font-lg">
+            {errors.password.message}
+          </span>
+        )}
         <input
           className="border h-[50px] border-1 w-full pl-4 focus:outline-4 outline-green-300"
           type="password"
           placeholder="비밀번호 재확인"
           {...bind("passwordMatch")}
         />
+        {errors.passwordMatch && (
+          <span className="text-red-600 font-lg">
+            {errors.passwordMatch.message}
+          </span>
+        )}
 
-        <Button
-          className="bg-green-400 text-white font-lg text-lg h-[50px] w-[200px]"
-          onClick={() => {}}
-        >
-          회원가입
-        </Button>
+        <input
+          type="submit"
+          value="회원가입"
+          className="bg-green-400 text-white font-lg text-lg h-[50px] w-[200px] cursor-pointer"
+        />
       </form>
     </AuthLayout>
   );

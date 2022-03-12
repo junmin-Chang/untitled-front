@@ -1,5 +1,6 @@
 import { useAppDispatch, useAppSelector } from "../app/hooks";
-import Button from "../components/common/Button";
+import * as Yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
 import AuthLayout from "../layouts/auth";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { login } from "../features/auth/authSlice";
@@ -13,7 +14,17 @@ const Login = () => {
   const navigate = useNavigate();
   const { isLoggedIn } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
-  const { register: bind, handleSubmit } = useForm<Inputs>();
+
+  const loginSchema = Yup.object().shape({
+    userId: Yup.string().required("아이디를 입력해주세요"),
+    password: Yup.string().required("패스워드를 입력해주세요"),
+  });
+  const validationOption = { resolver: yupResolver(loginSchema) };
+  const {
+    register: bind,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<Inputs>(validationOption);
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     dispatch(login(data)).unwrap();
   };
@@ -46,20 +57,27 @@ const Login = () => {
           className="border h-[50px] border-1 w-full pl-4 focus:outline-4 outline-green-300"
           type="text"
           placeholder="아이디"
-          {...bind("userId", { required: true })}
+          {...bind("userId")}
         />
+        {errors.userId && (
+          <span className="text-red-600 font-lg">{errors.userId.message}</span>
+        )}
         <input
           className="border h-[50px] border-1 w-full pl-4 focus:outline-4 outline-green-300"
           type="password"
           placeholder="비밀번호"
-          {...bind("password", { required: true })}
+          {...bind("password")}
         />
-        <Button
-          className="bg-green-400 text-white font-lg text-lg h-[50px] w-[200px]"
-          onClick={() => {}}
-        >
-          로그인
-        </Button>
+        {errors.password && (
+          <span className="text-red-600 font-lg">
+            {errors.password.message}
+          </span>
+        )}
+        <input
+          type="submit"
+          value="로그인"
+          className="bg-green-400 text-white font-lg text-lg h-[50px] w-[200px] cursor-pointer"
+        />
       </form>
     </AuthLayout>
   );
