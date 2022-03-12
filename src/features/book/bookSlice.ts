@@ -6,9 +6,11 @@ export const bookApi = createApi({
   baseQuery: axiosPrivateInstance,
   endpoints: (builder) => ({
     getBooksByName: builder.query({
-      query: (name) => `/book/${name}`,
+      query: (name) => `/book/${encodeURI(name)}`,
     }),
   }),
+  refetchOnFocus: false,
+  refetchOnReconnect: true,
 });
 
 export const { useGetBooksByNameQuery } = bookApi;
