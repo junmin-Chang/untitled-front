@@ -1,19 +1,40 @@
 import { useCallback } from "react";
 import { Link } from "react-router-dom";
+import { useAppDispatch } from "../../app/hooks";
+import { addBook } from "../../features/book/bookSlice";
+import { axiosPrivateInstance } from "../../services";
+import convertHtmlToText from "../../utils/convertHtmlToText";
 import GlossyCard from "../GlossyCard";
 
 interface BookProps {
   book: any;
 }
 const BookCard = ({ book }: BookProps) => {
-  const onClickWillRead = useCallback(() => {}, []);
-  const onClickHasRead = useCallback(() => {}, []);
+  const dispatch = useAppDispatch();
+  const onClickWillRead = useCallback(() => {
+    dispatch(
+      addBook({
+        title: book.title,
+        image: book.image,
+        isbn: book.isbn,
+        hasRead: true,
+      })
+    );
+  }, [book, dispatch]);
+  const onClickHasRead = useCallback(async () => {
+    await axiosPrivateInstance.post("/book", {
+      title: book.title,
+      image: book.image,
+      isbn: book.isbn,
+      hasRead: true,
+    });
+  }, [book]);
   return (
     <GlossyCard>
       <Link to={`/book/${book.isbn}`}>
         <div className="flex flex-col items-center py-10 gap-5">
           <p className="text-lg font-black text-center">
-            {book.title.replace(/<\/?[^>]+(>|$)/g, "")}
+            {convertHtmlToText(book.title)}
           </p>
           <img src={book.image} alt="book_image" />
         </div>

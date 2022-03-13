@@ -1,5 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useGetBooksByNameQuery } from "../features/book/bookSlice";
+import convertHtmlToText from "../utils/convertHtmlToText";
 
 const Book = () => {
   const { isbn } = useParams();
@@ -17,8 +18,8 @@ const Book = () => {
   return (
     <div>
       <ul>
-        <li>{book[0].title?.replace(/<\/?[^>]+(>|$)/g, "")}</li>
-        <li>{book[0].description?.replace(/<\/?[^>]+(>|$)/g, "")}</li>
+        <li>{convertHtmlToText(book[0].title)}</li>
+        <li>{convertHtmlToText(book[0].description)}</li>
       </ul>
     </div>
   );
