@@ -31,6 +31,7 @@ const Login = () => {
   useEffect(() => {
     if (isLoggedIn) {
       navigate("/");
+      window.location.reload();
     }
   }, [isLoggedIn, navigate]);
   return (

@@ -2,5 +2,6 @@ export enum path {
   HOME = "/",
   LOGIN = "/login",
   SIGNUP = "/signup",
-  PROFILE = "/profile",
+  BOOKSEARCH = "/book",
+  BOOK = "/book/:isbn",
 }
