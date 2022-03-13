@@ -6,7 +6,7 @@ export const bookApi = createApi({
   baseQuery: axiosPrivateInstance,
   endpoints: (builder) => ({
     getBooksByName: builder.query({
-      query: (name) => `/book/${encodeURI(name)}`,
+      query: (name) => `/book/${encodeURI(encodeURIComponent(name))}`,
     }),
   }),
   refetchOnFocus: false,
