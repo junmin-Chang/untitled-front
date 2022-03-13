@@ -4,4 +4,5 @@ export enum path {
   SIGNUP = "/signup",
   BOOKSEARCH = "/book",
   BOOK = "/book/:isbn",
+  PROFILE = "/profile",
 }

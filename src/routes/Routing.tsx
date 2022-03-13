@@ -5,6 +5,7 @@ import Signup from "../pages/Signup";
 import Home from "../pages/Home";
 import Book from "../pages/Book";
 import BookSearch from "../pages/BookSearch";
+import Profile from "../pages/Profile";
 const Routing = () => {
   return (
     <Routes>
@@ -13,6 +14,7 @@ const Routing = () => {
       <Route path={path.SIGNUP} element={<Signup />} />
       <Route path={path.BOOKSEARCH} element={<BookSearch />} />
       <Route path={path.BOOK} element={<Book />} />
+      <Route path={path.PROFILE} element={<Profile />} />
     </Routes>
   );
 };
