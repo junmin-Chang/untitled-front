@@ -41,8 +41,8 @@ export const bookApi = createApi({
       query: (name) => `/book/${encodeURI(encodeURIComponent(name))}`,
     }),
   }),
-  refetchOnFocus: false,
-  refetchOnReconnect: true,
+  refetchOnFocus: true,
+  refetchOnReconnect: false,
 });
 const bookSlice = createSlice({
   name: "book",

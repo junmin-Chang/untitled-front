@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import jwtDecode from "jwt-decode";
 import { refreshToken } from "../features/auth/authSlice";
 import authHeader from "./auth/auth-header";
@@ -20,7 +20,7 @@ export const setUpInterceptor = (store: any) => {
         if (decodedToken.exp * 1000 < new Date().getTime()) {
           await store.dispatch(refreshToken());
           if (config.headers) {
-            config.headers["authorization"] = `Bearer ${
+            config.headers.authorization = `Bearer ${
               store.getState().auth.user.accessToken
             }`;
           }
