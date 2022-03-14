@@ -1,9 +1,8 @@
 import { ChangeEvent, useCallback, useState } from "react";
 import BookCard from "../components/BookSearch/BookCard";
-import { Link } from "react-router-dom";
 import { useGetBooksByNameQuery } from "../features/book/bookSlice";
 import useDebounce from "../hooks/useDebounce";
-import { useAppSelector } from "../app/hooks";
+import Grid from "../layouts/Grid";
 
 const BookSearch = () => {
   const [value, setValue] = useState("react");
@@ -24,9 +23,11 @@ const BookSearch = () => {
         />
       </div>
       <div className="flex flex-col items-center gap-10">
-        {books.map((book: any, index: number) => (
-          <BookCard key={index} book={book} />
-        ))}
+        <Grid>
+          {books.map((book: any, index: number) => (
+            <BookCard key={index} book={book} />
+          ))}
+        </Grid>
       </div>
     </div>
   );
