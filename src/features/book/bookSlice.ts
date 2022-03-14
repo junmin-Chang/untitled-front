@@ -27,8 +27,8 @@ export const addBook = createAsyncThunk(
     try {
       const response = await bookService.addBook(title, image, hasRead, isbn);
       return response.data;
-    } catch (err) {
-      return thunkAPI.rejectWithValue("book add failed");
+    } catch (err: any) {
+      return thunkAPI.rejectWithValue(err.response.data.message);
     }
   }
 );
@@ -37,8 +37,8 @@ export const getBooks = createAsyncThunk("book/getAll", async (_, thunkAPI) => {
   try {
     const resposne = await bookService.getBooks();
     return resposne.data;
-  } catch (err) {
-    return thunkAPI.rejectWithValue("get books failed");
+  } catch (err: any) {
+    return thunkAPI.rejectWithValue(err.response.data.message);
   }
 });
 export const bookApi = createApi({

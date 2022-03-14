@@ -1,8 +1,8 @@
 import { useCallback } from "react";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 import { useAppDispatch } from "../../app/hooks";
 import { addBook } from "../../features/book/bookSlice";
-import { axiosPrivateInstance } from "../../services";
 import convertHtmlToText from "../../utils/convertHtmlToText";
 import GlossyCard from "../GlossyCard";
 
@@ -11,7 +11,7 @@ interface BookProps {
 }
 const BookCard = ({ book }: BookProps) => {
   const dispatch = useAppDispatch();
-  const onClickWillRead = useCallback(() => {
+  const onClickHasRead = useCallback(() => {
     dispatch(
       addBook({
         title: book.title,
@@ -19,16 +19,21 @@ const BookCard = ({ book }: BookProps) => {
         isbn: book.isbn,
         hasRead: true,
       })
-    );
+    )
+      .unwrap()
+      .catch((message) =>
+        toast.error(message, {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+        })
+      );
   }, [book, dispatch]);
-  const onClickHasRead = useCallback(async () => {
-    await axiosPrivateInstance.post("/book", {
-      title: book.title,
-      image: book.image,
-      isbn: book.isbn,
-      hasRead: true,
-    });
-  }, [book]);
+
   return (
     <GlossyCard>
       <Link to={`/book/${book.isbn}`}>
@@ -45,12 +50,6 @@ const BookCard = ({ book }: BookProps) => {
           className="rounded-3xl bg-green-400 py-2 px-4 text-white font-black"
         >
           읽었어요
-        </button>
-        <button
-          onClick={onClickWillRead}
-          className=" rounded-3xl bg-red-400 py-2 px-4 text-white font-black"
-        >
-          읽을거에요
         </button>
       </div>
     </GlossyCard>
