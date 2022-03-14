@@ -18,5 +18,5 @@ module.exports = {
     },
     extend: {},
   },
-  plugins: ["tailwindcss-filters"],
+  plugins: [require("tailwindcss-filters")],
 };

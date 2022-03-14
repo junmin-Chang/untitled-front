@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { logout } from "../features/auth/authSlice";
 import Button from "./common/Button";
+import { FcReadingEbook } from "react-icons/fc";
 
 const Header = () => {
   const { isLoggedIn, user } = useAppSelector((state) => state.auth);
@@ -10,21 +11,10 @@ const Header = () => {
     <header className="bg-white">
       <div className="flex px-5 py-4 border-b border-1 border-black[0.1] itmes-center justify-between">
         <Link to="/">
-          <div>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6 inline-block align-top"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-            >
-              <path
-                fillRule="evenodd"
-                d="M12.316 3.051a1 1 0 01.633 1.265l-4 12a1 1 0 11-1.898-.632l4-12a1 1 0 011.265-.633zM5.707 6.293a1 1 0 010 1.414L3.414 10l2.293 2.293a1 1 0 11-1.414 1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0zm8.586 0a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-3 3a1 1 0 11-1.414-1.414L16.586 10l-2.293-2.293a1 1 0 010-1.414z"
-                clipRule="evenodd"
-              />
-            </svg>
+          <div className="flex flex-row">
+            <FcReadingEbook size={30} />
             <h1 className="font-black text-xl leading-none inline-block align-top my-1.5 ml-2.5">
-              Untitled
+              Bookers
             </h1>
           </div>
         </Link>
@@ -35,6 +25,22 @@ const Header = () => {
                 어서오세요,{" "}
                 <b className="text-green-700">{user.user.userName} 님</b>!
               </span>
+              <Link to="/profile">
+                <Button
+                  onClick={() => {}}
+                  className="bg-green-200 text-black font-medium"
+                >
+                  서재
+                </Button>
+              </Link>
+              <Link to="/book">
+                <Button
+                  onClick={() => {}}
+                  className="bg-green-300 text-black font-medium"
+                >
+                  책 찾기
+                </Button>
+              </Link>
               <Button
                 onClick={() => dispatch(logout())}
                 className="bg-green-500 text-white font-medium"

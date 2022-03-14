@@ -1,4 +1,6 @@
-import { ChangeEvent, useCallback, useState } from "react";
+import { ChangeEvent, useCallback, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAppSelector } from "../app/hooks";
 import BookCard from "../components/BookSearch/BookCard";
 import { useGetBooksByNameQuery } from "../features/book/bookSlice";
 import useDebounce from "../hooks/useDebounce";
@@ -7,10 +9,19 @@ import Grid from "../layouts/Grid";
 const BookSearch = () => {
   const [value, setValue] = useState("react");
   const name = useDebounce(value, 400);
-  const { data: books, isLoading } = useGetBooksByNameQuery(name);
+  const { data: books, isLoading } = useGetBooksByNameQuery(name, {
+    skip: value.trim().length === 0,
+  });
+
+  const { isLoggedIn } = useAppSelector((state) => state.auth);
+
   const onChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
   }, []);
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!isLoggedIn) navigate("/login");
+  }, [navigate, isLoggedIn]);
 
   if (isLoading) return <p>Loading..</p>;
   return (

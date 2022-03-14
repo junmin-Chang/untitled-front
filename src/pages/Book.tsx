@@ -16,7 +16,7 @@ const Book = () => {
   if (isLoading) return <p>Loading..</p>;
   if (error) return <p>Error!</p>;
   return (
-    <div>
+    <div className="flex flex-row w-full h-full">
       <ul>
         <li>{convertHtmlToText(book[0].title)}</li>
         <li>{convertHtmlToText(book[0].description)}</li>
