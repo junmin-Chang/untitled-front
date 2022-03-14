@@ -12,14 +12,7 @@ interface BookProps {
 const BookCard = ({ book }: BookProps) => {
   const dispatch = useAppDispatch();
   const onClickHasRead = useCallback(() => {
-    dispatch(
-      addBook({
-        title: book.title,
-        image: book.image,
-        isbn: book.isbn,
-        hasRead: true,
-      })
-    )
+    dispatch(addBook(book))
       .unwrap()
       .catch((message) =>
         toast.error(message, {

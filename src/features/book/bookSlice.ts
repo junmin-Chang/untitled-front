@@ -15,17 +15,9 @@ interface Book {
 const initialState: Book[] = [];
 export const addBook = createAsyncThunk(
   "book/add",
-  async (
-    {
-      title,
-      image,
-      hasRead,
-      isbn,
-    }: { title: string; image: string; hasRead: boolean; isbn: string },
-    thunkAPI
-  ) => {
+  async (book: Book, thunkAPI) => {
     try {
-      const response = await bookService.addBook(title, image, hasRead, isbn);
+      const response = await bookService.addBook(book);
       return response.data;
     } catch (err: any) {
       return thunkAPI.rejectWithValue(err.response.data.message);
