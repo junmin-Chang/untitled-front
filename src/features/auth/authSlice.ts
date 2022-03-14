@@ -49,15 +49,7 @@ export const refreshToken = createAsyncThunk(
   "auth/refreshToken",
   async (_, thunkAPI) => {
     const state = thunkAPI.getState() as RootState;
-    const res = await authService.refresh(state.auth.user?.refreshToken);
-
-    const newUser = {
-      ...state.auth.user,
-      accessToken: res.accessToken,
-      refreshToken: res.refreshToken,
-    };
-
-    return newUser;
+    return await authService.refresh(state.auth.user?.refreshToken);
   }
 );
 
