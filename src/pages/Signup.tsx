@@ -6,6 +6,7 @@ import { register } from "../features/auth/authSlice";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import { FcReadingEbook } from "react-icons/fc";
+import { toast } from "react-toastify";
 type Inputs = {
   userName: string;
   userId: string;
@@ -38,7 +39,18 @@ const Signup = () => {
       .unwrap()
       .then(() => {
         navigate("/login");
-      });
+      })
+      .catch((message) =>
+        toast.error(message, {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+        })
+      );
   };
   const { isLoggedIn } = useAppSelector((state) => state.auth);
 

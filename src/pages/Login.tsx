@@ -7,6 +7,7 @@ import { login } from "../features/auth/authSlice";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { FcReadingEbook } from "react-icons/fc";
+import { toast } from "react-toastify";
 type Inputs = {
   userId: string;
   password: string;
@@ -27,7 +28,19 @@ const Login = () => {
     formState: { errors },
   } = useForm<Inputs>(validationOption);
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    dispatch(login(data)).unwrap();
+    dispatch(login(data))
+      .unwrap()
+      .catch((message) =>
+        toast.error(message, {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+        })
+      );
   };
   useEffect(() => {
     if (isLoggedIn) {
