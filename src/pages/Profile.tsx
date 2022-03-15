@@ -1,24 +1,66 @@
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
+import Button from "../components/common/Button";
 import GlossyCard from "../components/GlossyCard";
-import { getBooks } from "../features/book/bookSlice";
+import FilterMenu from "../components/Profile/FilterMenu";
+import { deleteBook, getBooks, updateBook } from "../features/book/bookSlice";
 import Grid from "../layouts/Grid";
 import convertHtmlToText from "../utils/convertHtmlToText";
 
 const Profile = () => {
   const dispatch = useAppDispatch();
-  const { user } = useAppSelector((state) => state.auth);
-  useEffect(() => {
-    dispatch(getBooks());
-  }, [dispatch]);
+
+  const onDelete = useCallback(
+    (book: any) => {
+      dispatch(deleteBook(book));
+    },
+    [dispatch]
+  );
+
+  const onClickHasRead = useCallback(
+    async (book: any) => {
+      await dispatch(
+        updateBook({
+          id: book.id,
+          hasRead: true,
+          willRead: false,
+        })
+      );
+      await dispatch(getBooks("hasRead"));
+    },
+    [dispatch]
+  );
+  const onClickWillRead = useCallback(
+    async (book: any) => {
+      await dispatch(
+        updateBook({
+          id: book.id,
+          hasRead: false,
+          willRead: true,
+        })
+      );
+      await dispatch(getBooks("willRead"));
+    },
+    [dispatch]
+  );
   const books = useAppSelector((state) => state.book);
+  useEffect(() => {
+    dispatch(getBooks("default"));
+  }, [dispatch]);
+
   return (
-    <div className="w-full h-full flex flex-col gap-10 items-center py-10">
-      <p className="font-black text-3xl">{user.user.userName}님의 서재</p>
+    <div className="w-full h-full flex flex-col gap-10 items-center p-10">
+      <FilterMenu />
       <Grid>
         {books.map((book, index) => (
           <GlossyCard key={index}>
+            <Button
+              className="bg-red-600 text-white max-w-[100px] ml-auto"
+              onClick={() => onDelete(book)}
+            >
+              삭제
+            </Button>
             <Link
               to={`/book/${book.isbn}`}
               className="flex flex-col items-center gap-10"
@@ -28,6 +70,20 @@ const Profile = () => {
               </p>
               <img src={book.image} alt={book.title} />
             </Link>
+            <div className="flex flex-row gap-2 ml-auto">
+              <Button
+                className="bg-green-600 text-white max-w-[100px]"
+                onClick={() => onClickHasRead(book)}
+              >
+                읽었어요
+              </Button>
+              <Button
+                className="bg-green-700 text-white max-w-[100px]"
+                onClick={() => onClickWillRead(book)}
+              >
+                읽을거에요
+              </Button>
+            </div>
           </GlossyCard>
         ))}
       </Grid>
