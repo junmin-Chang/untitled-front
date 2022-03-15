@@ -3,12 +3,12 @@ import { Link } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import Button from "../components/common/Button";
 import GlossyCard from "../components/GlossyCard";
-import FilterMenu from "../components/Profile/FilterMenu";
+import FilterMenu from "../components/Shelf/FilterMenu";
 import { deleteBook, getBooks, updateBook } from "../features/book/bookSlice";
 import Grid from "../layouts/Grid";
 import convertHtmlToText from "../utils/convertHtmlToText";
 
-const Profile = () => {
+const Shelf = () => {
   const dispatch = useAppDispatch();
 
   const onDelete = useCallback(
@@ -91,4 +91,4 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default Shelf;
