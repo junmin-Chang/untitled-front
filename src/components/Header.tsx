@@ -25,7 +25,7 @@ const Header = () => {
                 어서오세요,{" "}
                 <b className="text-green-700">{user.user.userName} 님</b>!
               </span>
-              <Link to="/shelf">
+              <Link to="/shelf/all">
                 <Button
                   onClick={() => {}}
                   className="bg-green-200 text-black font-medium"

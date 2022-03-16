@@ -1,5 +1,5 @@
 import { useCallback, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import Button from "../components/common/Button";
 import GlossyCard from "../components/GlossyCard";
@@ -9,6 +9,7 @@ import Grid from "../layouts/Grid";
 import convertHtmlToText from "../utils/convertHtmlToText";
 
 const Shelf = () => {
+  const { sortBy } = useParams();
   const dispatch = useAppDispatch();
 
   const onDelete = useCallback(
@@ -27,9 +28,9 @@ const Shelf = () => {
           willRead: false,
         })
       );
-      await dispatch(getBooks("hasRead"));
+      await dispatch(getBooks(sortBy as string));
     },
-    [dispatch]
+    [dispatch, sortBy]
   );
   const onClickWillRead = useCallback(
     async (book: any) => {
@@ -40,14 +41,15 @@ const Shelf = () => {
           willRead: true,
         })
       );
-      await dispatch(getBooks("willRead"));
+      await dispatch(getBooks(sortBy as string));
     },
-    [dispatch]
+    [dispatch, sortBy]
   );
   const books = useAppSelector((state) => state.book);
   useEffect(() => {
-    dispatch(getBooks("default"));
-  }, [dispatch]);
+    console.log(sortBy);
+    dispatch(getBooks(sortBy as string));
+  }, [dispatch, sortBy]);
 
   return (
     <div className="w-full h-full flex flex-col gap-10 items-center p-10">

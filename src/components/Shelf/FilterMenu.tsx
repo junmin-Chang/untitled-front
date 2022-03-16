@@ -1,38 +1,40 @@
-import { useCallback } from "react";
-import { useAppDispatch } from "../../app/hooks";
-import { getBooks } from "../../features/book/bookSlice";
+import { NavLink } from "react-router-dom";
 
 const FilterMenu = () => {
-  const dispatch = useAppDispatch();
-  const onClickDefault = useCallback(() => {
-    dispatch(getBooks("default"));
-  }, [dispatch]);
-  const onClickHasRead = useCallback(() => {
-    dispatch(getBooks("hasRead"));
-  }, [dispatch]);
-  const onClickWillRead = useCallback(() => {
-    dispatch(getBooks("willRead"));
-  }, [dispatch]);
+  const baseClass = "px-4 py-2 rounded-2xl";
   return (
-    <div className="flex flex-row gap-6 px-4 py-2 bg-white bg-opacity-60">
-      <button
-        onClick={onClickDefault}
-        className="hover:bg-green-500 hover:text-white"
+    <div className="flex flex-row gap-6 px-4 py-2 bg-white bg-opacity-60 rounded-2xl">
+      <NavLink
+        to="/shelf/all"
+        className={({ isActive }) =>
+          isActive
+            ? baseClass + " bg-green-400 text-white"
+            : baseClass + " bg-transparent"
+        }
       >
         ALL
-      </button>
-      <button
-        onClick={onClickHasRead}
-        className="hover:bg-green-500 hover:text-white"
+      </NavLink>
+      <NavLink
+        to="/shelf/hasRead"
+        className={({ isActive }) =>
+          isActive
+            ? baseClass + " bg-green-400 text-white"
+            : baseClass + " bg-transparent"
+        }
       >
         읽은 책들
-      </button>
-      <button
-        onClick={onClickWillRead}
-        className="hover:bg-green-500 hover:text-white"
+      </NavLink>
+
+      <NavLink
+        to="/shelf/willRead"
+        className={({ isActive }) =>
+          isActive
+            ? baseClass + " bg-green-400 text-white"
+            : baseClass + " bg-transparent"
+        }
       >
         읽을 책들
-      </button>
+      </NavLink>
     </div>
   );
 };

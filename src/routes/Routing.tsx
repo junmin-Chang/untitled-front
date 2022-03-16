@@ -14,7 +14,7 @@ const Routing = () => {
       <Route path={path.SIGNUP} element={<Signup />} />
       <Route path={path.BOOKSEARCH} element={<BookSearch />} />
       <Route path={path.BOOK} element={<Book />} />
-      <Route path={path.SHELF} element={<Shelf />} />
+      <Route path={`${path.SHELF}/:sortBy`} element={<Shelf />} />
     </Routes>
   );
 };
