@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { axiosPrivateInstance } from "../../services";
-import bookService from "../../services/book/indext";
+import bookService from "../../services/book/index";
 
 interface Book {
   id: string;
