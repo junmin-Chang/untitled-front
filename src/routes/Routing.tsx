@@ -3,9 +3,12 @@ import { path } from "./path";
 import Login from "../pages/Login";
 import Signup from "../pages/Signup";
 import Home from "../pages/Home";
-import Book from "../pages/Book";
+import Book from "../pages/BookInfo";
 import BookSearch from "../pages/BookSearch";
 import Shelf from "../pages/Shelf";
+import Community from "../pages/Community";
+import Write from "../pages/Write";
+import CommunityInfo from "../pages/CommunityInfo";
 const Routing = () => {
   return (
     <Routes>
@@ -15,6 +18,10 @@ const Routing = () => {
       <Route path={path.BOOKSEARCH} element={<BookSearch />} />
       <Route path={path.BOOK} element={<Book />} />
       <Route path={`${path.SHELF}/:sortBy`} element={<Shelf />} />
+      <Route path={path.COMMUNITY} element={<Community />} />
+      <Route path={path.COMMUNITY_INFO} element={<CommunityInfo />} />
+      <Route path={path.COMMUNITY_SEARCH_BOOK} element={<Community />} />
+      <Route path={path.WRITE} element={<Write />} />
     </Routes>
   );
 };
