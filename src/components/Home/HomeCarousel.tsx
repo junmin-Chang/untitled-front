@@ -6,7 +6,7 @@ import "swiper/css/pagination";
 const HomeCarousel = () => {
   return (
     <Swiper
-      className="w-full h-[300px] rounded-3xl bg-white"
+      className="w-full max-w-[500px] h-[300px] rounded-3xl bg-white"
       modules={[Thumbs, Navigation, Pagination]}
       spaceBetween={50}
       navigation
