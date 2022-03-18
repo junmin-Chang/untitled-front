@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { createApi } from "@reduxjs/toolkit/query/react";
-import { axiosPrivateInstance, axiosPublicInstance } from "../../services";
+import { axiosPrivateInstance } from "../../services";
 import { addPost } from "../../services/post";
 
 interface PostReg {
