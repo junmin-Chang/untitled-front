@@ -18,3 +18,7 @@ export const addPost = ({
     bookIsbn: isbn,
   });
 };
+
+export const deletePost = (id: string) => {
+  return axiosPrivateInstance.delete(`/post/${id}`);
+};

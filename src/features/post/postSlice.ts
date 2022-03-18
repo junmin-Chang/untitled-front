@@ -1,12 +1,13 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { axiosPrivateInstance } from "../../services";
-import { addPost } from "../../services/post";
+import { addPost, deletePost } from "../../services/post";
 
 interface PostReg {
   title: string;
   content: string;
   isbn: string;
+  id?: string;
 }
 const initialState: PostReg[] = [];
 
@@ -37,6 +38,18 @@ export const createPost = createAsyncThunk(
   }
 );
 
+export const removePost = createAsyncThunk(
+  "post/delete",
+  async (id: string, thunkAPI) => {
+    try {
+      const response = await deletePost(id);
+      return response.data;
+    } catch (err: any) {
+      thunkAPI.rejectWithValue(err.response.data.message);
+    }
+  }
+);
+
 const postSlice = createSlice({
   name: "post",
   initialState,
@@ -46,6 +59,12 @@ const postSlice = createSlice({
       state.push(action.payload);
     });
     builder.addCase(createPost.rejected, (state, action) => {
+      return state;
+    });
+    builder.addCase(removePost.fulfilled, (state, action) => {
+      return state.filter((post) => post.id !== action.payload.id);
+    });
+    builder.addCase(removePost.rejected, (state, action) => {
       return state;
     });
   },
