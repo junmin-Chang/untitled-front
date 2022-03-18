@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { createApi } from "@reduxjs/toolkit/query/react";
-import { axiosPublicInstance } from "../../services";
+import { axiosPrivateInstance, axiosPublicInstance } from "../../services";
 import { addPost } from "../../services/post";
 
 interface PostReg {
@@ -12,10 +12,13 @@ const initialState: PostReg[] = [];
 
 export const postApi = createApi({
   reducerPath: "postApi",
-  baseQuery: axiosPublicInstance,
+  baseQuery: axiosPrivateInstance,
   endpoints: (builder) => ({
     getAllPosts: builder.query({
       query: (isbn) => `/post?isbn=${isbn}`,
+    }),
+    getPostById: builder.query({
+      query: (id: string) => `/post/${id}`,
     }),
   }),
   refetchOnMountOrArgChange: true,
@@ -47,6 +50,6 @@ const postSlice = createSlice({
     });
   },
 });
-export const { useGetAllPostsQuery } = postApi;
+export const { useGetAllPostsQuery, useGetPostByIdQuery } = postApi;
 const { reducer } = postSlice;
 export default reducer;
