@@ -1,4 +1,4 @@
-import { axiosPublicInstance, axiosPrivateInstance } from "../index";
+import { axiosPublicInstance } from "../index";
 
 const register = (userName: string, userId: string, password: string) => {
   return axiosPublicInstance.post("/auth/register", {
@@ -35,7 +35,7 @@ const refresh = async (refreshToken: string) => {
 };
 
 const getProfile = async () => {
-  const res = await axiosPrivateInstance.get("/auth/profile");
+  const res = await axiosPublicInstance.get("/auth/profile");
 
   return res.data;
 };

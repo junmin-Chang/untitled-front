@@ -1,16 +1,37 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { removePost, useGetPostByIdQuery } from "../features/post/postSlice";
+import {
+  createComment,
+  removeComment,
+  removePost,
+  useGetPostByIdQuery,
+} from "../features/post/postSlice";
 import { Viewer } from "@toast-ui/react-editor";
 import format from "date-fns/format";
 import { useAppSelector, useAppDispatch } from "../app/hooks";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 
 const CommunityInfo = () => {
   const { id } = useParams();
-  const { data: post, isLoading } = useGetPostByIdQuery(id as string);
-  const { user } = useAppSelector((state) => state.auth.user);
+  const { data: post, isLoading, refetch } = useGetPostByIdQuery(id as string);
+  const [comment, setComment] = useState("");
+  const auth = useAppSelector((state) => state.auth.user);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const onChangeComment = useCallback((e: any) => {
+    setComment(e.target.value);
+  }, []);
+  const onDeleteComment = useCallback(
+    async (commentId: string) => {
+      await dispatch(removeComment({ commentId })).unwrap();
+      refetch();
+    },
+    [dispatch, refetch]
+  );
+  const onSubmitComment = useCallback(async () => {
+    await dispatch(createComment({ postId: id!, body: { content: comment } }))
+      .unwrap()
+      .then(() => refetch());
+  }, [comment, id, dispatch, refetch]);
   const onDelete = useCallback(async () => {
     await dispatch(removePost(id!))
       .unwrap()
@@ -22,7 +43,7 @@ const CommunityInfo = () => {
   return (
     <div className="w-full h-full bg-white">
       <div className="w-full h-full max-w-xl mx-auto my-0 px-6 py-0 flex flex-col">
-        {user.userId === post.userId && (
+        {auth && auth.user.userId === post.userId && (
           <button
             className="bg-red-400 text-white font-black px-2 py-1 rounded-2xl ml-auto mt-4"
             onClick={onDelete}
@@ -38,6 +59,45 @@ const CommunityInfo = () => {
         </p>
 
         <Viewer initialValue={post.content} />
+
+        <div>
+          <div className="flex flex-col w-full h-[150px] gap-2 mt-8">
+            <p className="font-black text-2xl">
+              {post.comment.length}개의 댓글이 있습니다.
+            </p>
+            <textarea
+              className="min-h-[150px] w-full border focus:outline-green-200 p-4"
+              value={comment}
+              onChange={onChangeComment}
+            />
+            <button
+              className="bg-green-500 rounded-xl inline-block ml-auto px-4 py-2 text-white font-black"
+              onClick={onSubmitComment}
+            >
+              작성
+            </button>
+          </div>
+          <div className="mt-12">
+            {post.comment.map((c: any) => (
+              <div className="w-full py-8 bg-white border-b " key={c.id}>
+                {auth && auth.user.userId === c.userId && (
+                  <button
+                    onClick={() => onDeleteComment(c.id)}
+                    className="bg-red-500 rounded-xl px-2 py-1 text-white font-black"
+                  >
+                    삭제
+                  </button>
+                )}
+
+                <p className="font-black">{c.userId}</p>
+                <p className="text-gray-400 font-semibold">
+                  {format(new Date(c.createdAt), "yyyy/MM/dd hh:mm")}
+                </p>
+                <p className="font-bold pt-6">{c.content}</p>
+              </div>
+            ))}
+          </div>
+        </div>
         <style>
           {`
         

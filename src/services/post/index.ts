@@ -22,3 +22,11 @@ export const addPost = ({
 export const deletePost = (id: string) => {
   return axiosPrivateInstance.delete(`/post/${id}`);
 };
+
+export const addComment = (boardId: string, body: any) => {
+  return axiosPrivateInstance.post(`/comment/${boardId}`, body);
+};
+
+export const deleteComment = (commentId: string) => {
+  return axiosPrivateInstance.delete(`/comment/${commentId}`);
+};

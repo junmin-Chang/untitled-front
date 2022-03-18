@@ -1,13 +1,19 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { axiosPrivateInstance } from "../../services";
-import { addPost, deletePost } from "../../services/post";
+import {
+  addComment,
+  addPost,
+  deleteComment,
+  deletePost,
+} from "../../services/post";
 
 interface PostReg {
   title: string;
   content: string;
   isbn: string;
   id?: string;
+  comment?: any[];
 }
 const initialState: PostReg[] = [];
 
@@ -50,6 +56,28 @@ export const removePost = createAsyncThunk(
   }
 );
 
+export const createComment = createAsyncThunk(
+  "post/createComment",
+  async ({ postId, body }: { postId: string; body: any }, thunkAPI) => {
+    try {
+      const response = await addComment(postId, body);
+      return response.data;
+    } catch (err: any) {
+      thunkAPI.rejectWithValue(err.response.data.message);
+    }
+  }
+);
+export const removeComment = createAsyncThunk(
+  "post/removeComment",
+  async ({ commentId }: { commentId: string }, thunkAPI) => {
+    try {
+      const response = await deleteComment(commentId);
+      return response.data;
+    } catch (err: any) {
+      thunkAPI.rejectWithValue(err.response.data.message);
+    }
+  }
+);
 const postSlice = createSlice({
   name: "post",
   initialState,
@@ -66,6 +94,12 @@ const postSlice = createSlice({
     });
     builder.addCase(removePost.rejected, (state, action) => {
       return state;
+    });
+    builder.addCase(createComment.fulfilled, (state, action) => {
+      alert("등록 완료");
+    });
+    builder.addCase(createComment.rejected, (state, action) => {
+      alert("댓글 작성 실패");
     });
   },
 });
