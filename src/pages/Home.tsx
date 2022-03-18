@@ -1,5 +1,5 @@
 import CommunityBox from "../components/Home/CommunityBox";
-import HomeCard from "../components/Home/HomeCard";
+import HomeCard from "../components/Home/BannerCard";
 import HomeCarousel from "../components/Home/HomeCarousel";
 
 const Home = () => {

@@ -3,11 +3,11 @@ const GlossyCard: React.FC = ({ children }) => {
     <div
       className="
       w-full 
+      h-full
       flex 
       flex-col
-      gap-10  
       max-w-[500px] 
-      px-4 
+      px-10
       py-10 
       bg-white 
       shadow-lg 
