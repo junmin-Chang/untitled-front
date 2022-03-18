@@ -1,12 +1,11 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Thumbs, Pagination } from "swiper";
-import { BsPeopleFill } from "react-icons/bs";
 import "swiper/css";
 import "swiper/css/pagination";
 const HomeCarousel = () => {
   return (
     <Swiper
-      className="w-full max-w-[500px] min-h-[300px] rounded-3xl bg-white"
+      className="w-full max-w-[500px] max-h-[300px] rounded-3xl bg-white"
       modules={[Thumbs, Navigation, Pagination]}
       spaceBetween={50}
       navigation
@@ -23,7 +22,6 @@ const HomeCarousel = () => {
             <span className="text-green-600">Bookers</span>와 함께 함께 책 읽을
             사람을 찾아보세요
           </p>
-          <BsPeopleFill fontSize={200} className="text-green-600" />
         </div>
       </SwiperSlide>
       <SwiperSlide className="p-12">

@@ -6,7 +6,7 @@ const GlossyCard: React.FC = ({ children }) => {
       h-full
       flex 
       flex-col
-      max-w-[500px] 
+      min-w-[500px]
       px-10
       py-10 
       bg-white 

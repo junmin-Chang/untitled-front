@@ -51,7 +51,7 @@ const Shelf = () => {
   }, [dispatch, sortBy]);
 
   return (
-    <div className="w-full h-full flex flex-col gap-10 items-center p-10">
+    <div className="w-full h-full max-h-[500px] flex flex-col gap-10 items-center p-10">
       <FilterMenu />
       <Grid>
         {books.map((book, index) => (

@@ -2,19 +2,15 @@ import { Link, useParams } from "react-router-dom";
 import Grid from "../layouts/Grid";
 import GlossyCard from "../components/GlossyCard";
 import { useGetAllPostsQuery } from "../features/post/postSlice";
-import { useEffect } from "react";
 import format from "date-fns/format";
 import convertHtmlToText from "../utils/convertHtmlToText";
 const Community = () => {
   const { isbn } = useParams();
   const { data: posts, isLoading } = useGetAllPostsQuery(isbn ?? "");
 
-  useEffect(() => {
-    console.log(isbn);
-  }, [isbn]);
   if (isLoading) return <p>Loading..</p>;
   return (
-    <div className="w-full h-full flex justify-center items-center p-10">
+    <div className="w-full h-full max-h-[500px] flex justify-center items-center p-10">
       <Grid>
         {posts.map((post: any, index: number) => (
           <GlossyCard key={index}>
