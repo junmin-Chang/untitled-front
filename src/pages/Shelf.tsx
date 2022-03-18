@@ -47,7 +47,6 @@ const Shelf = () => {
   );
   const books = useAppSelector((state) => state.book);
   useEffect(() => {
-    console.log(sortBy);
     dispatch(getBooks(sortBy as string));
   }, [dispatch, sortBy]);
 
@@ -57,12 +56,20 @@ const Shelf = () => {
       <Grid>
         {books.map((book, index) => (
           <GlossyCard key={index}>
-            <Button
-              className="bg-red-600 text-white max-w-[100px] ml-auto"
-              onClick={() => onDelete(book)}
-            >
-              삭제
-            </Button>
+            <div className="ml-auto flex flex-row gap-4 pb-4">
+              <Button
+                className="bg-green-600 text-white max-w-[100px] font-black"
+                onClick={() => onClickHasRead(book)}
+              >
+                읽었어요
+              </Button>
+              <Button
+                className="bg-green-700 text-white max-w-[100px] font-black"
+                onClick={() => onClickWillRead(book)}
+              >
+                읽을거에요
+              </Button>
+            </div>
             <Link
               to={`/book/${book.isbn}`}
               className="flex flex-col items-center gap-10"
@@ -72,19 +79,19 @@ const Shelf = () => {
               </p>
               <img src={book.image} alt={book.title} />
             </Link>
-            <div className="flex flex-row gap-2 ml-auto">
-              <Button
-                className="bg-green-600 text-white max-w-[100px]"
-                onClick={() => onClickHasRead(book)}
+            <div className="flex flex-row gap-4 ml-auto mt-10">
+              <Link
+                to={`/community/search/${book.isbn}`}
+                className="rounded-3xl bg-blue-400 py-2 px-4 text-white font-black"
               >
-                읽었어요
-              </Button>
-              <Button
-                className="bg-green-700 text-white max-w-[100px]"
-                onClick={() => onClickWillRead(book)}
+                모임 찾기
+              </Link>
+              <Link
+                to={`/community/write/${book.isbn}`}
+                className="rounded-3xl bg-sky-600	 py-2 px-4 text-white font-black"
               >
-                읽을거에요
-              </Button>
+                모임 만들기
+              </Link>
             </div>
           </GlossyCard>
         ))}
