@@ -34,7 +34,7 @@ const CommentBox = ({ comment }: { comment: any }) => {
   return (
     <div className="w-full py-8 bg-white border-b " key={comment.id}>
       <div className="flex flex-row gap-4">
-        <p className="font-black">{comment.userId}</p>
+        <p className="font-black">{comment.author.userName}</p>
         {user && user.user.userId === comment.userId && (
           <>
             <button

@@ -25,7 +25,7 @@ const Community = () => {
             </p>
             <div className="mt-auto">
               <p className="inline block bg-emerald-300	rounded-xl p-1 px-2 text-white font-black">
-                작성자 by.{post.userId}
+                작성자 by.{post.author.userName}
               </p>
               <p className="text-xs text-black-200 mt-2">
                 {format(new Date(post.createdAt), "yyyy/MM/dd")}

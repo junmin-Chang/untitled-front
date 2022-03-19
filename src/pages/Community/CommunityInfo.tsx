@@ -50,7 +50,7 @@ const CommunityInfo = () => {
 
         <p className="mt-0 text-4xl font-black py-8">{post.title}</p>
         <div className="flex flex-row">
-          <p className="mt-4 font-black">작성자 {post.userId}</p>
+          <p className="mt-4 font-black">작성자 {post.author.userName}</p>
           <p className="mt-4 ml-auto text-gray-400 font-black">
             {format(new Date(post.createdAt), "yyyy/MM/dd")}
           </p>
