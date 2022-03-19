@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { useAppDispatch } from "../app/hooks";
 import { logout } from "../features/auth/authSlice";
@@ -6,12 +6,31 @@ import { path } from "../routes/path";
 
 const Dropdown = () => {
   const dispatch = useAppDispatch();
+  const ref = useRef<HTMLDivElement>(null);
   const [open, setOpen] = useState(false);
   const onToggle = useCallback(() => {
     setOpen((value) => !value);
   }, []);
+  const handleEsc = useCallback((e) => {
+    if (e.key === "Esc" || e.key === "Escape") setOpen(false);
+  }, []);
+  const handleOutsideClick = useCallback((e) => {
+    if (ref.current && !ref.current.contains(e.target)) {
+      setOpen(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    document.addEventListener("keydown", handleEsc);
+    document.addEventListener("mousedown", handleOutsideClick);
+    return () => {
+      document.removeEventListener("keydown", handleEsc);
+      document.removeEventListener("mousedown", handleOutsideClick);
+    };
+  }, [handleEsc, handleOutsideClick]);
+
   return (
-    <div className="relative inline-block text-left">
+    <div className="relative inline-block text-left" ref={ref}>
       <div>
         <button
           type="button"
@@ -66,6 +85,15 @@ const Dropdown = () => {
               책 찾기
             </Link>
             <Link
+              to={path.MY_POSTS}
+              className="text-gray-700 block px-4 py-2 text-sm"
+              role="menuitem"
+              tabIndex={-1}
+              id="menu-item-1"
+            >
+              내 글
+            </Link>
+            <Link
               to={path.COMMUNITY}
               className="text-gray-700 block px-4 py-2 text-sm"
               role="menuitem"
@@ -77,7 +105,7 @@ const Dropdown = () => {
             <form method="POST" action="#" role="none">
               <button
                 type="submit"
-                className="text-gray-700 block w-full text-left px-4 py-2 text-sm"
+                className="text-red-400 block w-full text-left px-4 py-2 text-sm"
                 role="menuitem"
                 tabIndex={-1}
                 id="menu-item-3"
