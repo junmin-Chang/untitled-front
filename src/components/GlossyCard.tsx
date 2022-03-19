@@ -4,6 +4,8 @@ const GlossyCard: React.FC = ({ children }) => {
       className="
       w-full 
       h-full
+      min-w-[300px]
+      max-w-[500px]
       flex 
       flex-col
       px-10
