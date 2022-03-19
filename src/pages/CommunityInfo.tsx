@@ -43,7 +43,7 @@ const CommunityInfo = () => {
   }, [dispatch, id, navigate]);
   if (isLoading) return <p>Loading..</p>;
   return (
-    <div className="w-full h-full bg-white">
+    <div className="w-full h-full bg-white overflow-y-auto">
       <div className="w-full h-full max-w-xl mx-auto my-0 px-6 py-0 flex flex-col">
         {auth && auth.user.userId === post.userId && (
           <button

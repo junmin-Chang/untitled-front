@@ -5,7 +5,7 @@ import GlossyCard from "../GlossyCard";
 const CommunityBox = () => {
   return (
     <GlossyCard>
-      <div className="w-full h-full flex flex-col px-12 gap-1">
+      <div className="w-full h-full flex flex-col gap-1">
         <p className="font-black text-2xl">빠른 메뉴</p>
         <div className="flex flex-row w-full gap-2">
           <Link
