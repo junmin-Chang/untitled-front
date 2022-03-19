@@ -1,12 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { axiosPrivateInstance } from "../../services";
-import {
-  addComment,
-  addPost,
-  deleteComment,
-  deletePost,
-} from "../../services/post";
+import { addPost, deleteComment, deletePost } from "../../services/post";
 
 interface PostReg {
   title: string;
@@ -18,14 +13,32 @@ interface PostReg {
 const initialState: PostReg[] = [];
 
 export const postApi = createApi({
+  tagTypes: ["Post"],
   reducerPath: "postApi",
   baseQuery: axiosPrivateInstance,
   endpoints: (builder) => ({
     getAllPosts: builder.query({
       query: (isbn) => `/post?isbn=${isbn}`,
+      providesTags: (result, err, id) => [{ type: "Post", id: "LIST" }],
     }),
     getPostById: builder.query({
       query: (id: string) => `/post/${id}`,
+      providesTags: (result, err, id) => [{ type: "Post", id }],
+    }),
+    addComment: builder.mutation({
+      queryFn: ({ id, data }) =>
+        axiosPrivateInstance({
+          url: `/comment/${id}`,
+          method: "POST",
+          data,
+        }),
+      invalidatesTags: (result, err, arg) => {
+        console.log("arg", arg);
+        return [
+          { type: "Post", id: arg.id },
+          { type: "Post", id: "LIST" },
+        ];
+      },
     }),
   }),
   refetchOnMountOrArgChange: true,
@@ -56,17 +69,6 @@ export const removePost = createAsyncThunk(
   }
 );
 
-export const createComment = createAsyncThunk(
-  "post/createComment",
-  async ({ postId, body }: { postId: string; body: any }, thunkAPI) => {
-    try {
-      const response = await addComment(postId, body);
-      return response.data;
-    } catch (err: any) {
-      thunkAPI.rejectWithValue(err.response.data.message);
-    }
-  }
-);
 export const removeComment = createAsyncThunk(
   "post/removeComment",
   async ({ commentId }: { commentId: string }, thunkAPI) => {
@@ -95,14 +97,12 @@ const postSlice = createSlice({
     builder.addCase(removePost.rejected, (state, action) => {
       return state;
     });
-    builder.addCase(createComment.fulfilled, (state, action) => {
-      alert("등록 완료");
-    });
-    builder.addCase(createComment.rejected, (state, action) => {
-      alert("댓글 작성 실패");
-    });
   },
 });
-export const { useGetAllPostsQuery, useGetPostByIdQuery } = postApi;
+export const {
+  useGetAllPostsQuery,
+  useGetPostByIdQuery,
+  useAddCommentMutation,
+} = postApi;
 const { reducer } = postSlice;
 export default reducer;
