@@ -1,14 +1,14 @@
 import { Route, Routes } from "react-router-dom";
 import { path } from "./path";
-import Login from "../pages/Login";
-import Signup from "../pages/Signup";
+import Login from "../pages/Auth/Login";
+import Signup from "../pages/Auth/Signup";
 import Home from "../pages/Home";
-import Book from "../pages/BookInfo";
-import BookSearch from "../pages/BookSearch";
+import Book from "../pages/Book/BookInfo";
+import BookSearch from "../pages/Book/BookSearch";
 import Shelf from "../pages/Shelf";
-import Community from "../pages/Community";
-import Write from "../pages/Write";
-import CommunityInfo from "../pages/CommunityInfo";
+import Community from "../pages/Community/Community";
+import Write from "../pages/Community/Write";
+import CommunityInfo from "../pages/Community/CommunityInfo";
 const Routing = () => {
   return (
     <Routes>

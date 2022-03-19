@@ -4,10 +4,10 @@ import {
   useGetPostByIdQuery,
   useAddCommentMutation,
   useRemoveCommentMutation,
-} from "../features/post/postSlice";
+} from "../../features/post/postSlice";
 import { Viewer } from "@toast-ui/react-editor";
 import format from "date-fns/format";
-import { useAppSelector, useAppDispatch } from "../app/hooks";
+import { useAppSelector, useAppDispatch } from "../../app/hooks";
 import { useCallback, useState } from "react";
 
 const CommunityInfo = () => {

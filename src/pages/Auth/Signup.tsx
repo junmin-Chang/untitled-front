@@ -1,8 +1,8 @@
 import { Navigate, useNavigate } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../app/hooks";
-import AuthLayout from "../layouts/auth";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import AuthLayout from "../../layouts/auth";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { register } from "../features/auth/authSlice";
+import { register } from "../../features/auth/authSlice";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import { FcReadingEbook } from "react-icons/fc";

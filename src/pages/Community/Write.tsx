@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
-import Editor from "../components/Editor";
-import { useGetBooksByNameQuery } from "../features/book/bookSlice";
+import Editor from "../../components/Editor";
+import { useGetBooksByNameQuery } from "../../features/book/bookSlice";
 
 const Write = () => {
   const { isbn } = useParams();

@@ -1,10 +1,10 @@
 import { ChangeEvent, useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAppSelector } from "../app/hooks";
-import BookCard from "../components/BookSearch/BookCard";
-import { useGetBooksByNameQuery } from "../features/book/bookSlice";
-import useDebounce from "../hooks/useDebounce";
-import Grid from "../layouts/Grid";
+import { useAppSelector } from "../../app/hooks";
+import BookCard from "../../components/BookSearch/BookCard";
+import { useGetBooksByNameQuery } from "../../features/book/bookSlice";
+import useDebounce from "../../hooks/useDebounce";
+import Grid from "../../layouts/Grid";
 
 const BookSearch = () => {
   const [value, setValue] = useState("react");

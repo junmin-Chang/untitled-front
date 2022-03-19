@@ -1,9 +1,9 @@
 import { Link, useParams } from "react-router-dom";
-import Grid from "../layouts/Grid";
-import GlossyCard from "../components/GlossyCard";
-import { useGetAllPostsQuery } from "../features/post/postSlice";
+import Grid from "../../layouts/Grid";
+import GlossyCard from "../../components/GlossyCard";
+import { useGetAllPostsQuery } from "../../features/post/postSlice";
 import format from "date-fns/format";
-import convertHtmlToText from "../utils/convertHtmlToText";
+import convertHtmlToText from "../../utils/convertHtmlToText";
 const Community = () => {
   const { isbn } = useParams();
   const { data: posts, isLoading } = useGetAllPostsQuery(isbn ?? "");

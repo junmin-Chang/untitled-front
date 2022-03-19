@@ -1,6 +1,6 @@
 import { Link, useParams } from "react-router-dom";
-import { useGetBooksByNameQuery } from "../features/book/bookSlice";
-import convertHtmlToText from "../utils/convertHtmlToText";
+import { useGetBooksByNameQuery } from "../../features/book/bookSlice";
+import convertHtmlToText from "../../utils/convertHtmlToText";
 
 const Book = () => {
   const { isbn } = useParams();

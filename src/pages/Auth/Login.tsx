@@ -1,9 +1,9 @@
-import { useAppDispatch, useAppSelector } from "../app/hooks";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import AuthLayout from "../layouts/auth";
+import AuthLayout from "../../layouts/auth";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { login } from "../features/auth/authSlice";
+import { login } from "../../features/auth/authSlice";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { FcReadingEbook } from "react-icons/fc";
