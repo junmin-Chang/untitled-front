@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { axiosPrivateInstance } from "../../services";
-import { addPost, deleteComment, deletePost } from "../../services/post";
+import { addPost, deletePost } from "../../services/post";
 
 interface PostReg {
   title: string;
@@ -40,6 +40,19 @@ export const postApi = createApi({
         ];
       },
     }),
+    removeComment: builder.mutation({
+      queryFn: ({ commentId }) =>
+        axiosPrivateInstance({
+          url: `/comment/${commentId}`,
+          method: "DELETE",
+        }),
+      invalidatesTags: (result, err, arg) => {
+        return [
+          { type: "Post", id: result.postId },
+          { type: "Post", id: "LIST" },
+        ];
+      },
+    }),
   }),
   refetchOnMountOrArgChange: true,
   refetchOnFocus: true,
@@ -69,17 +82,17 @@ export const removePost = createAsyncThunk(
   }
 );
 
-export const removeComment = createAsyncThunk(
-  "post/removeComment",
-  async ({ commentId }: { commentId: string }, thunkAPI) => {
-    try {
-      const response = await deleteComment(commentId);
-      return response.data;
-    } catch (err: any) {
-      thunkAPI.rejectWithValue(err.response.data.message);
-    }
-  }
-);
+// export const removeComment = createAsyncThunk(
+//   "post/removeComment",
+//   async ({ commentId }: { commentId: string }, thunkAPI) => {
+//     try {
+//       const response = await deleteComment(commentId);
+//       return response.data;
+//     } catch (err: any) {
+//       thunkAPI.rejectWithValue(err.response.data.message);
+//     }
+//   }
+// );
 const postSlice = createSlice({
   name: "post",
   initialState,
@@ -103,6 +116,7 @@ export const {
   useGetAllPostsQuery,
   useGetPostByIdQuery,
   useAddCommentMutation,
+  useRemoveCommentMutation,
 } = postApi;
 const { reducer } = postSlice;
 export default reducer;

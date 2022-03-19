@@ -1,9 +1,9 @@
 import { useParams, useNavigate } from "react-router-dom";
 import {
-  removeComment,
   removePost,
   useGetPostByIdQuery,
   useAddCommentMutation,
+  useRemoveCommentMutation,
 } from "../features/post/postSlice";
 import { Viewer } from "@toast-ui/react-editor";
 import format from "date-fns/format";
@@ -12,9 +12,11 @@ import { useCallback, useState } from "react";
 
 const CommunityInfo = () => {
   const { id } = useParams();
-  const { data: post, isLoading, refetch } = useGetPostByIdQuery(id as string);
+  const { data: post, isLoading } = useGetPostByIdQuery(id as string);
+
   const [comment, setComment] = useState("");
   const [addComment] = useAddCommentMutation();
+  const [removeComment] = useRemoveCommentMutation();
 
   const auth = useAppSelector((state) => state.auth.user);
   const dispatch = useAppDispatch();
@@ -24,13 +26,13 @@ const CommunityInfo = () => {
   }, []);
   const onDeleteComment = useCallback(
     async (commentId: string) => {
-      await dispatch(removeComment({ commentId })).unwrap();
-      refetch();
+      removeComment({ commentId });
     },
-    [dispatch, refetch]
+    [removeComment]
   );
   const onSubmitComment = useCallback(async () => {
     addComment({ id: id!, data: { content: comment } });
+    setComment("");
   }, [addComment, id, comment]);
   const onDelete = useCallback(async () => {
     await dispatch(removePost(id!))
@@ -100,8 +102,6 @@ const CommunityInfo = () => {
         </div>
         <style>
           {`
-        
-          
           .toastui-editor-contents > div > h1 {
             font-size: 24px;
             line-height: 28px;
@@ -109,7 +109,6 @@ const CommunityInfo = () => {
             margin: 52px 0 15px 0;
             padding-bottom: 7px;
           }
-          
         `}
         </style>
       </div>
