@@ -3,12 +3,12 @@ import {
   removePost,
   useGetPostByIdQuery,
   useAddCommentMutation,
-  useRemoveCommentMutation,
 } from "../../features/post/postSlice";
 import { Viewer } from "@toast-ui/react-editor";
 import format from "date-fns/format";
 import { useAppSelector, useAppDispatch } from "../../app/hooks";
 import { useCallback, useState } from "react";
+import CommentBox from "../../components/CommentBox";
 
 const CommunityInfo = () => {
   const { id } = useParams();
@@ -16,7 +16,6 @@ const CommunityInfo = () => {
 
   const [comment, setComment] = useState("");
   const [addComment] = useAddCommentMutation();
-  const [removeComment] = useRemoveCommentMutation();
 
   const auth = useAppSelector((state) => state.auth.user);
   const dispatch = useAppDispatch();
@@ -24,12 +23,7 @@ const CommunityInfo = () => {
   const onChangeComment = useCallback((e: any) => {
     setComment(e.target.value);
   }, []);
-  const onDeleteComment = useCallback(
-    async (commentId: string) => {
-      removeComment({ commentId });
-    },
-    [removeComment]
-  );
+
   const onSubmitComment = useCallback(async () => {
     addComment({ id: id!, data: { content: comment } });
     setComment("");
@@ -55,10 +49,12 @@ const CommunityInfo = () => {
         )}
 
         <p className="mt-0 text-4xl font-black py-8">{post.title}</p>
-        <p className="mt-4 font-black">작성자 {post.userId}</p>
-        <p className="mt-4">
-          작성 날짜 {format(new Date(post.createdAt), "yyyy/MM/dd")}
-        </p>
+        <div className="flex flex-row">
+          <p className="mt-4 font-black">작성자 {post.userId}</p>
+          <p className="mt-4 ml-auto text-gray-400 font-black">
+            {format(new Date(post.createdAt), "yyyy/MM/dd")}
+          </p>
+        </div>
 
         <Viewer initialValue={post.content} />
 
@@ -73,7 +69,7 @@ const CommunityInfo = () => {
               onChange={onChangeComment}
             />
             <button
-              className="bg-green-500 rounded-xl inline-block ml-auto px-4 py-2 text-white font-black"
+              className="bg-green-500 rounded-xl inline-block ml-auto px-4 py-2 text-white font-black hover:opacity-60"
               onClick={onSubmitComment}
             >
               작성
@@ -81,22 +77,7 @@ const CommunityInfo = () => {
           </div>
           <div className="mt-12">
             {post.comment.map((c: any) => (
-              <div className="w-full py-8 bg-white border-b " key={c.id}>
-                {auth && auth.user.userId === c.userId && (
-                  <button
-                    onClick={() => onDeleteComment(c.id)}
-                    className="bg-red-500 rounded-xl px-2 py-1 text-white font-black"
-                  >
-                    삭제
-                  </button>
-                )}
-
-                <p className="font-black">{c.userId}</p>
-                <p className="text-gray-400 font-semibold">
-                  {format(new Date(c.createdAt), "yyyy/MM/dd hh:mm")}
-                </p>
-                <p className="font-bold pt-6">{c.content}</p>
-              </div>
+              <CommentBox comment={c} key={c.id} />
             ))}
           </div>
         </div>

@@ -47,10 +47,24 @@ export const postApi = createApi({
       },
     }),
     removeComment: builder.mutation({
-      queryFn: ({ commentId }) =>
+      queryFn: ({ commentId }: { commentId: string }) =>
         axiosPrivateInstance({
           url: `/comment/${commentId}`,
           method: "DELETE",
+        }),
+      invalidatesTags: (result, err, arg) => {
+        return [
+          { type: "Post", id: result.postId },
+          { type: "Post", id: "LIST" },
+        ];
+      },
+    }),
+    updateComment: builder.mutation({
+      queryFn: ({ commentId, data }: { commentId: string; data: any }) =>
+        axiosPrivateInstance({
+          url: `/comment/${commentId}`,
+          method: "PATCH",
+          data,
         }),
       invalidatesTags: (result, err, arg) => {
         return [
@@ -114,6 +128,7 @@ export const {
   useRemoveCommentMutation,
   useGetMyPostsQuery,
   useGetUserPostsQuery,
+  useUpdateCommentMutation,
 } = postApi;
 const { reducer } = postSlice;
 export default reducer;
