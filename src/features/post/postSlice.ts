@@ -25,6 +25,12 @@ export const postApi = createApi({
       query: (id: string) => `/post/${id}`,
       providesTags: (result, err, id) => [{ type: "Post", id }],
     }),
+    getMyPosts: builder.query<any, void>({
+      query: () => `/post/user/myPosts`,
+    }),
+    getUserPosts: builder.query({
+      query: (userId: string) => `/post/user/${userId}`,
+    }),
     addComment: builder.mutation({
       queryFn: ({ id, data }) =>
         axiosPrivateInstance({
@@ -82,17 +88,6 @@ export const removePost = createAsyncThunk(
   }
 );
 
-// export const removeComment = createAsyncThunk(
-//   "post/removeComment",
-//   async ({ commentId }: { commentId: string }, thunkAPI) => {
-//     try {
-//       const response = await deleteComment(commentId);
-//       return response.data;
-//     } catch (err: any) {
-//       thunkAPI.rejectWithValue(err.response.data.message);
-//     }
-//   }
-// );
 const postSlice = createSlice({
   name: "post",
   initialState,
@@ -117,6 +112,8 @@ export const {
   useGetPostByIdQuery,
   useAddCommentMutation,
   useRemoveCommentMutation,
+  useGetMyPostsQuery,
+  useGetUserPostsQuery,
 } = postApi;
 const { reducer } = postSlice;
 export default reducer;

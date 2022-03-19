@@ -9,6 +9,8 @@ import Shelf from "../pages/Shelf";
 import Community from "../pages/Community/Community";
 import Write from "../pages/Community/Write";
 import CommunityInfo from "../pages/Community/CommunityInfo";
+import MyPosts from "../pages/User/MyPosts";
+import OtherUserPosts from "../pages/User/OtherUserPosts";
 const Routing = () => {
   return (
     <Routes>
@@ -22,6 +24,8 @@ const Routing = () => {
       <Route path={path.COMMUNITY_INFO} element={<CommunityInfo />} />
       <Route path={path.COMMUNITY_SEARCH_BOOK} element={<Community />} />
       <Route path={path.WRITE} element={<Write />} />
+      <Route path={path.MY_POSTS} element={<MyPosts />} />
+      <Route path={path.USER_POSTS} element={<OtherUserPosts />} />
     </Routes>
   );
 };
