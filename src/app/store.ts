@@ -13,7 +13,9 @@ export const store = configureStore({
     [postApi.reducerPath]: postApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(bookApi.middleware),
+    getDefaultMiddleware()
+      .concat(bookApi.middleware)
+      .concat(postApi.middleware),
 });
 
 setupListeners(store.dispatch);
