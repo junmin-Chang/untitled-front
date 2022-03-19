@@ -1,9 +1,9 @@
 import { useParams, useNavigate } from "react-router-dom";
 import {
-  createComment,
   removeComment,
   removePost,
   useGetPostByIdQuery,
+  useAddCommentMutation,
 } from "../features/post/postSlice";
 import { Viewer } from "@toast-ui/react-editor";
 import format from "date-fns/format";
@@ -14,6 +14,8 @@ const CommunityInfo = () => {
   const { id } = useParams();
   const { data: post, isLoading, refetch } = useGetPostByIdQuery(id as string);
   const [comment, setComment] = useState("");
+  const [addComment] = useAddCommentMutation();
+
   const auth = useAppSelector((state) => state.auth.user);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -28,10 +30,8 @@ const CommunityInfo = () => {
     [dispatch, refetch]
   );
   const onSubmitComment = useCallback(async () => {
-    await dispatch(createComment({ postId: id!, body: { content: comment } }))
-      .unwrap()
-      .then(() => refetch());
-  }, [comment, id, dispatch, refetch]);
+    addComment({ id: id!, data: { content: comment } });
+  }, [addComment, id, comment]);
   const onDelete = useCallback(async () => {
     await dispatch(removePost(id!))
       .unwrap()
