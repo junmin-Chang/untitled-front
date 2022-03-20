@@ -4,7 +4,9 @@ import { useGetBooksByNameQuery } from "../../features/book/bookSlice";
 
 const Write = () => {
   const { isbn } = useParams();
-  const { data: book, isLoading } = useGetBooksByNameQuery(isbn);
+  const { data: book, isLoading } = useGetBooksByNameQuery({
+    name: isbn,
+  });
 
   return (
     <div className="w-full h-full p-10 flex flex-col gap-4">
