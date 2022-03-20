@@ -18,7 +18,8 @@ export const postApi = createApi({
   baseQuery: axiosPrivateInstance,
   endpoints: (builder) => ({
     getAllPosts: builder.query({
-      query: (isbn) => `/post?isbn=${isbn}`,
+      query: ({ isbn, skip = 0, take = 10 }) =>
+        `/post?isbn=${isbn}&skip=${skip}&take=${take}`,
       providesTags: (result, err, id) => [{ type: "Post", id: "LIST" }],
     }),
     getPostById: builder.query({

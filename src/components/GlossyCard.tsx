@@ -3,7 +3,6 @@ const GlossyCard: React.FC = ({ children }) => {
     <div
       className="
       w-full 
-      h-full
       min-w-[300px]
       max-w-[500px]
       flex 
