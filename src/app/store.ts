@@ -4,6 +4,7 @@ import authReducer from "../features/auth/authSlice";
 import { bookApi } from "../features/book/bookSlice";
 import bookReducer from "../features/book/bookSlice";
 import postReducer, { postApi } from "../features/post/postSlice";
+import { rtkQueryErrorLogger } from "../features/logger";
 export const store = configureStore({
   reducer: {
     auth: authReducer,
@@ -14,6 +15,7 @@ export const store = configureStore({
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
+      .concat(rtkQueryErrorLogger)
       .concat(bookApi.middleware)
       .concat(postApi.middleware),
 });

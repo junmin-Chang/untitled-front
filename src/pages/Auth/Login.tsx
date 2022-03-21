@@ -1,22 +1,19 @@
-import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { useAppDispatch } from "../../app/hooks";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import AuthLayout from "../../layouts/auth";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { login } from "../../features/auth/authSlice";
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { FcReadingEbook } from "react-icons/fc";
-import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+
 type Inputs = {
   userId: string;
   password: string;
 };
 const Login = () => {
-  const navigate = useNavigate();
-  const { isLoggedIn } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
-
+  const navigate = useNavigate();
   const loginSchema = Yup.object().shape({
     userId: Yup.string().required("아이디를 입력해주세요"),
     password: Yup.string().required("패스워드를 입력해주세요"),
@@ -27,27 +24,12 @@ const Login = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<Inputs>(validationOption);
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
-    dispatch(login(data))
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    await dispatch(login(data))
       .unwrap()
-      .catch((message) =>
-        toast.error(message, {
-          position: "top-center",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: false,
-          draggable: true,
-          progress: undefined,
-        })
-      );
+      .then(() => navigate("/"));
   };
-  useEffect(() => {
-    if (isLoggedIn) {
-      navigate("/");
-      window.location.reload();
-    }
-  }, [isLoggedIn, navigate]);
+
   return (
     <AuthLayout>
       <FcReadingEbook size={150} />

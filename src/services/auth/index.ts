@@ -9,17 +9,10 @@ const register = (userName: string, userId: string, password: string) => {
 };
 
 const login = (userId: string, password: string) => {
-  return axiosPublicInstance
-    .post("/auth/login", {
-      userId,
-      password,
-    })
-    .then((res) => {
-      if (res.data.accessToken) {
-        localStorage.setItem("user", JSON.stringify(res.data));
-      }
-      return res.data;
-    });
+  return axiosPublicInstance.post("/auth/login", {
+    userId,
+    password,
+  });
 };
 
 const logout = () => {

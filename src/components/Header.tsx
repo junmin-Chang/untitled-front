@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../app/hooks";
+import { useAppSelector } from "../app/hooks";
 import Button from "./common/Button";
 import { FcReadingEbook } from "react-icons/fc";
 import Dropdown from "./Dropdown";

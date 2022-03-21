@@ -1,6 +1,5 @@
 import { useCallback } from "react";
 import { Link } from "react-router-dom";
-import { toast } from "react-toastify";
 import { useAppDispatch } from "../../app/hooks";
 import { addBook } from "../../features/book/bookSlice";
 import convertHtmlToText from "../../utils/convertHtmlToText";
@@ -12,19 +11,7 @@ interface BookProps {
 const BookCard = ({ book }: BookProps) => {
   const dispatch = useAppDispatch();
   const onClickHasRead = useCallback(() => {
-    dispatch(addBook(book))
-      .unwrap()
-      .catch((message) =>
-        toast.error(message, {
-          position: "top-center",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: false,
-          draggable: true,
-          progress: undefined,
-        })
-      );
+    dispatch(addBook(book));
   }, [book, dispatch]);
 
   return (
